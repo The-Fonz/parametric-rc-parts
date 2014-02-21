@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  section.subheader.container
+    | Hi there! Welcome to #{title}. This is an example page mockup.
+  // Example content
+  section.container.productgrid
+    .row
+      .product.col-md-3.col-sm-4.col-xs-12
+        img(src='images/thumbnails/arm.gif')
+        a(href='')
+          h1 Some example product
+          p This amazing arm is very amazing. It rotates over 360 degrees.
+      .product.col-md-3.col-sm-4.col-xs-12
+        img(src='images/thumbnails/beugel.gif')
+        a(href='')
+          h1 Very useful thing
+          p Another amazing thing. Slightly different. Very useful. You can change anything.
+      .product.col-md-3.col-sm-4.col-xs-12
+        img(src='images/thumbnails/bolt.gif')
+        a(href='')
+          h1 Bolt eye
+          p This amazing arm is very amazing. It rotates over 360 degrees.
+      //.clearfix.visible-sm
+      // Make sure that grid wraps properly
+      .product.col-md-3.col-sm-4.col-xs-12
+        img(src='images/thumbnails/bolteye.gif')
+        a(href='')
+          h1 Bracket
+          p This amazing arm is very amazing. It rotates over 360 degrees.
+      .clearfix
+      //.clearfix.visible-sm
+      .product.col-md-3.col-sm-4.col-xs-12
+        img(src='images/thumbnails/clamp.gif')
+        h1 Clamping that shit
+        p This amazing arm is very amazing. It rotates over 360 degrees.
+      .product.col-md-3.col-sm-4.col-xs-12
+        img(src='images/thumbnails/ering.gif')
+        h1 Very useful ering
+        p This amazing arm is very amazing. It rotates over 360 degrees.
+      .product.col-md-3.col-sm-4.col-xs-12
+        img(src='images/thumbnails/gear.gif')
+        h1 Get my gears turning
+        p This amazing arm is very amazing. It rotates over 360 degrees.
