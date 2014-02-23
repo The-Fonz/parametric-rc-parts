@@ -1,7 +1,7 @@
 
 /**
- * Module dependencies.
- */
+ * Module dependencies
+   -------------------*/
 
 var express = require('express');
 var routes = require('./routes');
@@ -25,12 +25,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+// Match anything that does not end in .json
+// See http://stackoverflow.com/questions/21962329/regex-that-matches-anything-not-ending-in-json
+// Assume that all requests except for the ones ending in .json
+// are requesting an html page, thus send header??????
+//app.get(/^(?!.*\.json$).*$/, routes.index);
 
-http.createServer(app).listen(app.get('port'), function(){
+// Main page
+app.get('/', routes.index)
+// Part individual page
+app.get('/part/:partid', function(req, res) {res.end("Part # " + req.params.partid)});
+// Part Three.js JSON
+app.get('/part/:partid/threejson', function (req, res) {res.end("JSON # " + req.params.partid)});
+// Create page. Authenticate when submitting?
+//app.get('/create', routes.create);
+// My Parts, user obj??? Require authentication???
+// Use Express basicAuth() NO passportjs
+//app.get('/myparts', requireAuthentication???, user.myparts);
+
+
+http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
