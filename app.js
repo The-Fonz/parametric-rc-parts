@@ -34,6 +34,8 @@ if ('development' == app.get('env')) {
 // are requesting an html page, thus send header??????
 //app.get(/^(?!.*\.json$).*$/, routes.index);
 
+// Routes
+// ------
 // Main page
 app.get('/', routes.index)
 // Part individual page
@@ -41,10 +43,28 @@ app.get('/part/:partid', function(req, res) {res.end("Part # " + req.params.part
 // Part Three.js JSON
 app.get('/part/:partid/threejson', function (req, res) {res.end("JSON # " + req.params.partid)});
 // Create page. Authenticate when submitting?
-//app.get('/create', routes.create);
+app.get('/create', function(){});
+
+// Routes that require authentication
+// ----------------------------------
+// Create new part (called from '/create' page) by uploading FreeCAD
+app.post('/part', function () {});
+// Modify part (partially)
+app.patch('/part', function () {});
+// Delete part
+app.delete('/part', function () {});
+
 // My Parts, user obj??? Require authentication???
-// Use Express basicAuth() NO passportjs
-//app.get('/myparts', requireAuthentication???, user.myparts);
+// Use passportjs (added as dependency)
+app.get('/myparts', function () {});
+
+// Get user overview page
+app.get('/user/:userid', function () {});
+// Make new user
+app.post('/user', function () {});
+// Modify existing user
+app.patch('/user/:userid', function () {});
+
 
 
 http.createServer(app).listen(app.get('port'), function () {
