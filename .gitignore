@@ -21,6 +21,8 @@ bower_components
 ### Custom: ignore sublime files
 *.sublime-project
 *.sublime-workspace
+# And npmstart.cmd file, as it's only for windows
+npmstart.cmd
 
 
 #################
