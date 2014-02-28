@@ -10,3 +10,6 @@ When installing on Ubuntu, two things need to be installed: *Node.js* and *Mongo
 
 ### Backups and FTP ###
 For making backups, it might be useful to use LVM ([mongodb instructions](http://docs.mongodb.org/manual/tutorial/back-up-databases-with-filesystem-snapshots/#lvm-backup-and-restore)) to make a snapshot and then download that using FTP. For FTP on Ubuntu, *vsftpd* can be used.
+
+## Behaviour Driven Development ##
+Fancy term, but it works great. If you first specify behaviour and then implement it, it's much easier to see what you've done and to fix stuff. I use *Jasmine* for this. The tests can be found in the folder `/spec`. I use dummy data objects to test the database. Frontend testing can be done with *Casper*, but I think that just browser-testing the front-end will work just fine. For the backend however, it's damn handy.
