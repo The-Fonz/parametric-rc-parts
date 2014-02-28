@@ -21,17 +21,11 @@ routes.part = require('./routes/part');
 var user = require('./routes/user');
 */
 
-/**
- * Presenters
- * ----------*/
-var pres = {};
-pres.index = require('./presenters/index');
-pres.part = {};
-pres.part.getPartPage = require('./presenters/part/partPage');
-pres.part.getThreeJson = require('./presenters/part/threeJson')
-
 // all environments
-app.set('port', process.env.PORT || 80);
+var PRT = null;
+if ('development' == app.get('env')) PRT = 3000;
+else PRT = 80;
+app.set('port', process.env.PORT || PRT);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -53,16 +47,18 @@ if ('development' == app.get('env')) {
 // are requesting an html page, thus send header??????
 //app.get(/^(?!.*\.json$).*$/, routes.index);
 
+
 // Routes
 // ------
 // Main page
-app.get('/', pres.index.index)
+app.get('/', require('./presenters/index').index)
 // Part individual page
-app.get('/part/:partid', pres.part.getPartPage.get); // presenter.subject.jsfile.function
+app.get('/part/:partid', require('./presenters/part/partPage').get ); // presenter.subject.jsfile.function
 // Part Three.js JSON
+// require('./presenters/part/threeJson')
 app.get('/part/:partid/threejson', function (req, res) {res.end("Three.js JSON # " + req.params.partid)});
 // Part dependency graph for display with some JS Graphviz library
-app.get('/part/:partid/graphviz', function (req, res) {res.end("Graphviz requested for part # ")});
+app.get('/part/:partid/graphviz', function (req, res) {res.end("Graphviz requested for part # " + req.params.partid)});
 
 // Create page. Authenticate when submitting?
 app.get('/create', function(){});
@@ -86,6 +82,9 @@ app.get('/user/:userid', function () {});
 app.post('/user', function () {});
 // Modify existing user
 app.patch('/user/:userid', function () {});
+
+// Run Mocha, Jasmine (or other testing framework) tests and output as HTML
+app.get('/tests', function (req, res) {res.end("Do all unit tests and output as HTML.")});
 
 
 http.createServer(app).listen(app.get('port'), function () {

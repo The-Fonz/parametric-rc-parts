@@ -23,6 +23,8 @@ bower_components
 *.sublime-workspace
 # And npmstart.cmd file, as it's only for windows
 npmstart.cmd
+# And this shortcut
+mongod.exe - Snelkoppeling
 
 
 #################
