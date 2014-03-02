@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>database.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>database.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* This is the backend implementation. The backend can be anything really,
+ * if the databse changes, only this file changes. For now it's MongoDB.
+ * Backend is a class with methods. It intializes the database on construction.
+ * The object can then be passed around and it methods can be called.
+ */</span>
+
+<span class="hljs-keyword">var</span>	MongoClient = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongodb'</span>).MongoClient;
+<span class="hljs-keyword">var</span> ObjectID = <span class="hljs-built_in">require</span>(<span class="hljs-string">'mongodb'</span>).ObjectID;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Constructor. Connects to database on instantiation</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Database = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( mongoDbUrl, callBack )</span> {</span>
+	self = <span class="hljs-keyword">this</span>; <span class="hljs-comment">// VERY IMPORTANT</span>
+	self.db = <span class="hljs-literal">null</span>;
+	self.partsColl = <span class="hljs-literal">null</span>; <span class="hljs-comment">// Hold collections in object as well</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>TODO: More collections, split part metadata and json obj for speed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cB</span> <span class="hljs-params">( err, db )</span> {</span>
+		<span class="hljs-keyword">if</span> (db == <span class="hljs-literal">null</span>) console.error(<span class="hljs-string">"Backend: Database object empty"</span>);
+		<span class="hljs-keyword">if</span> (err) {
+			console.error(<span class="hljs-string">"Backend: Database connect error"</span>);
+		} <span class="hljs-keyword">else</span> {
+			self.db = db; <span class="hljs-comment">// self.db, not this.db!!!</span>
+			self.partsColl = db.collection(<span class="hljs-string">"parts"</span>);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Let the callback know that we’re done</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (callBack) callBack( err, db );
+	}
+	MongoClient.connect( mongoDbUrl , cB );
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Inserts the JSON object into the parts collection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Database.prototype.insertPart = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( jsonObject, callBack )</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkCb</span> <span class="hljs-params">( err, result )</span> {</span>
+		<span class="hljs-keyword">if</span> (err) console.error(<span class="hljs-string">"Database.insertPart callback"</span>);
+		<span class="hljs-keyword">if</span> (callBack) callBack ( err, result ); <span class="hljs-comment">// Call the optional callback</span>
+	}
+	self.partsColl.insert( jsonObject, checkCb );
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Find one part by its ID.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Database.prototype.findOnePartById = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( id, callBack )</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cB</span> <span class="hljs-params">(err, doc)</span> {</span>
+		<span class="hljs-keyword">if</span> (err) console.error(<span class="hljs-string">"callback error"</span>);
+		<span class="hljs-keyword">if</span> (!doc) console.error(<span class="hljs-string">"doc is empty"</span>);
+		<span class="hljs-keyword">if</span> (callBack) callBack( err, doc );
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>If id is a string and not an ObjectID… convert it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span>(id) === <span class="hljs-string">"string"</span> ) {
+		id = ObjectID(id);
+	}
+	self.partsColl.findOne( { _id: id }, cB );
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Preliminary function to search multiple parts. Needs filters. And spec.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Database.prototype.findParts = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( n, callBack )</span> {</span>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cB</span> <span class="hljs-params">( err, docs )</span> {</span>
+		<span class="hljs-keyword">if</span> (err) console.error(<span class="hljs-string">"callback error"</span>);
+		<span class="hljs-keyword">if</span> (!docs) console.error(<span class="hljs-string">"doc is empty"</span>);
+		callBack( err, docs );
+	}
+	self.partsColl.find( {}, { limit: n } ).toArray( cB );
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Close the database to avoid many connections building up.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Database.prototype.close = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+	self.db.close();
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Export the class. Needs to be instantiated with <code>new</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.Database = Database;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

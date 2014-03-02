@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  section.container
+    h1= part.title
+    .row
+      .col-xs-12.col-md-6
+        .partRenderCanvas
+          //- Display an initially hidden loading overlay
+          //- .hidden from Bootstrap
+          .overlay
+            //- .spinner from spinner.styl
+            //.spinner
+            //- From partPage.styl
+            .loadinfo
+              | Loading 3D view...
+          img(src='/public/images/thumbnails/#{part._id}.gif')
+      .col-xs-12.col-md-6
+        p Here come the sliders.
+    .row
+      .col-xs-12.col-md-6
+        p= part.description
+      .col-xs-12.col-md-6
+        p Specifications, order, etc.
+    .row
+      .col-xs-12
+        p Comments here. Aligned in the middle.
+block append scripts
+  //- Change to // on production
+  script(src="/public/javascripts/three.js")
+  script(src="/public/javascripts/OrbitControls.js")
+  script(src="/public/javascripts/CADview.js")
+  script(src="/public/javascripts/partPage.js")

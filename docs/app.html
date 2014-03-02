@@ -34,14 +34,18 @@
 <span class="hljs-comment">/**
  * Module dependencies
    -------------------*/</span>
-
 <span class="hljs-keyword">var</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
-<span class="hljs-keyword">var</span> routes = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./routes'</span>);
-<span class="hljs-keyword">var</span> user = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./routes/user'</span>);
 <span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
 <span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+<span class="hljs-keyword">var</span> stylus = <span class="hljs-built_in">require</span>(<span class="hljs-string">'stylus'</span>); <span class="hljs-comment">// CSS preprocessor</span>
+<span class="hljs-keyword">var</span> app = express();
 
-<span class="hljs-keyword">var</span> app = express();</pre></div></div>
+<span class="hljs-comment">/**
+ * All routes
+   ----------*/</span>
+<span class="hljs-comment">/*
+var routes = {};
+</span></pre></div></div>
             
         </li>
         
@@ -52,20 +56,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>all environments</p>
+              <p>Routes are defined per path, so any request starting with /part is routed by ./routes/part.
+In this example, ./routes/part then routes to a presenter that does the work.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.set(<span class="hljs-string">'port'</span>, process.env.PORT || <span class="hljs-number">3000</span>);
-app.set(<span class="hljs-string">'views'</span>, path.join(__dirname, <span class="hljs-string">'views'</span>));
-app.set(<span class="hljs-string">'view engine'</span>, <span class="hljs-string">'jade'</span>);
-app.use(express.favicon());
-app.use(express.logger(<span class="hljs-string">'dev'</span>));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, <span class="hljs-string">'public'</span>)));</pre></div></div>
+            <div class="content"><div class='highlight'><pre>routes.index = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./routes/index'</span>);
+routes.part = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./routes/part'</span>);</pre></div></div>
             
         </li>
         
@@ -76,13 +73,12 @@ app.use(express.static(path.join(__dirname, <span class="hljs-string">'public'</
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>development only</p>
+              <p>User specific routes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">if</span> (<span class="hljs-string">'development'</span> == app.get(<span class="hljs-string">'env'</span>)) {
-	app.use(express.errorHandler());
-}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>var user = require('./routes/user');
+*/</pre></div></div>
             
         </li>
         
@@ -93,13 +89,21 @@ app.use(express.static(path.join(__dirname, <span class="hljs-string">'public'</
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Match anything that does not end in .json
-See <a href="http://stackoverflow.com/questions/21962329/regex-that-matches-anything-not-ending-in-json">http://stackoverflow.com/questions/21962329/regex-that-matches-anything-not-ending-in-json</a>
-Assume that all requests except for the ones ending in .json
-are requesting an html page, thus send header??????
-app.get(/^(?!.<em>.json$).</em>$/, routes.index);</p>
+              <p>all environments</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> PRT = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-string">'development'</span> == app.get(<span class="hljs-string">'env'</span>)) PRT = <span class="hljs-number">3000</span>; <span class="hljs-comment">// Development needs another port than 80</span>
+<span class="hljs-keyword">else</span> PRT = <span class="hljs-number">80</span>; <span class="hljs-comment">// In production, we use the standard HTML port 80</span>
+app.set(<span class="hljs-string">'port'</span>, process.env.PORT || PRT);
+app.set(<span class="hljs-string">'views'</span>, path.join(__dirname, <span class="hljs-string">'views'</span>));
+app.set(<span class="hljs-string">'view engine'</span>, <span class="hljs-string">'jade'</span>);
+app.use(express.favicon());
+app.use(express.logger(<span class="hljs-string">'dev'</span>));
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());</pre></div></div>
             
         </li>
         
@@ -110,12 +114,16 @@ app.get(/^(?!.<em>.json$).</em>$/, routes.index);</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <h2 id="routes">Routes</h2>
-<p>Main page</p>
+              <p>Configure Stylus CSS preprocessor. Note the paths!</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/'</span>, routes.index)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>app.use(<span class="hljs-string">'/public/stylesheets'</span>, stylus.middleware({
+  src: __dirname + <span class="hljs-string">'/resources/stylesheets'</span>,
+  dest: __dirname + <span class="hljs-string">'/public/stylesheets'</span>,
+  debug: <span class="hljs-literal">true</span>,
+  force: <span class="hljs-literal">true</span>,
+}));</pre></div></div>
             
         </li>
         
@@ -126,11 +134,11 @@ app.get(/^(?!.<em>.json$).</em>$/, routes.index);</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Part individual page</p>
+              <p>First check if a static file is requested…</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/part/:partid'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> {</span>res.end(<span class="hljs-string">"Part # "</span> + req.params.partid)});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>app.use(<span class="hljs-string">'/public'</span>, express.static(__dirname + <span class="hljs-string">'/public'</span>));</pre></div></div>
             
         </li>
         
@@ -141,11 +149,11 @@ app.get(/^(?!.<em>.json$).</em>$/, routes.index);</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Part Three.js JSON</p>
+              <p>Injecting the app.router here makes the routes take precedence!</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/part/:partid/threejson'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> {</span>res.end(<span class="hljs-string">"JSON # "</span> + req.params.partid)});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>app.use(app.router);</pre></div></div>
             
         </li>
         
@@ -156,11 +164,9 @@ app.get(/^(?!.<em>.json$).</em>$/, routes.index);</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Create page. Authenticate when submitting?</p>
+              <p>Add a google analytics error sending handler here for production</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/create'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>});</pre></div></div>
             
         </li>
         
@@ -171,12 +177,13 @@ app.get(/^(?!.<em>.json$).</em>$/, routes.index);</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <h2 id="routes-that-require-authentication">Routes that require authentication</h2>
-<p>Create new part (called from ‘/create’ page) by uploading FreeCAD</p>
+              <p>development only</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.post(<span class="hljs-string">'/part'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">if</span> (<span class="hljs-string">'development'</span> == app.get(<span class="hljs-string">'env'</span>)) {
+	app.use(express.errorHandler({dumpExceptions: <span class="hljs-literal">true</span>, showStack: <span class="hljs-literal">true</span>}));
+}</pre></div></div>
             
         </li>
         
@@ -187,11 +194,12 @@ app.get(/^(?!.<em>.json$).</em>$/, routes.index);</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Modify part (partially)</p>
+              <h2 id="make-database">Make database</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.patch(<span class="hljs-string">'/part'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> Database = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./database'</span>).Database;
+<span class="hljs-keyword">var</span> dataBase = <span class="hljs-keyword">new</span> Database( <span class="hljs-string">"mongodb://localhost:27017/exampleDb"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( err, db )</span> {</span></pre></div></div>
             
         </li>
         
@@ -202,11 +210,11 @@ app.get(/^(?!.<em>.json$).</em>$/, routes.index);</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Delete part</p>
+              <p>Handle error: if (err) display error</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.delete(<span class="hljs-string">'/part'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (err) {</pre></div></div>
             
         </li>
         
@@ -217,12 +225,13 @@ app.get(/^(?!.<em>.json$).</em>$/, routes.index);</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>My Parts, user obj??? Require authentication???
-Use passportjs (added as dependency)</p>
+              <p>console.error(“Database error!”); // Is this necessary? Logging-wise?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/myparts'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Database error!'</span>); <span class="hljs-comment">// Crash process</span>
+  }
+});</pre></div></div>
             
         </li>
         
@@ -233,11 +242,18 @@ Use passportjs (added as dependency)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Get user overview page</p>
+              <h2 id="routes">Routes</h2>
+<p>Inject database for all requests! Injection using new Module(app, db) is
+also possible, but I think that the db object gets copied. My database
+object relies on a callback to provide its self.db object, so maybe this
+hasn’t been instantiated yet so doesn’t get copied with new Module(app,db).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/user/:userid'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>app.all(<span class="hljs-string">"*"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( req, res, next )</span> {</span>
+	req.db = dataBase;
+  next();
+});</pre></div></div>
             
         </li>
         
@@ -248,11 +264,11 @@ Use passportjs (added as dependency)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>Make new user</p>
+              <p>Main page</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.post(<span class="hljs-string">'/user'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/'</span>, <span class="hljs-built_in">require</span>(<span class="hljs-string">'./presenters/index'</span>).index)</pre></div></div>
             
         </li>
         
@@ -263,12 +279,178 @@ Use passportjs (added as dependency)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
+              <p>Part individual page</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/part/:partid'</span>, <span class="hljs-built_in">require</span>(<span class="hljs-string">'./presenters/part/partPage'</span>).get ); <span class="hljs-comment">// presenter.subject.jsfile.function</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Part Three.js JSON</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/part/:partid/threejson'</span>, <span class="hljs-built_in">require</span>(<span class="hljs-string">'./presenters/part/threeJson'</span>).get );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Part dependency graph for display with some JS Graphviz library</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/part/:partid/graphviz'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> {</span>res.end(<span class="hljs-string">"Graphviz requested for part # "</span> + req.params.partid)});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Create page. Authenticate when submitting?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/create'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>}); <span class="hljs-comment">// Auth path????</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <h2 id="routes-that-require-authentication">Routes that require authentication</h2>
+<p>Create new part (called from ‘/create’ page) by uploading FreeCAD</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.post(<span class="hljs-string">'/auth/part'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Modify part (partially)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.patch(<span class="hljs-string">'/auth/part/:partid'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Delete part</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.delete(<span class="hljs-string">'/auth/part/:partid'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>My Parts, user obj??? Require authentication???
+Use passportjs (added as dependency)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/auth/myparts'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Get user overview page (public?)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/user/:userid'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Make new user</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.post(<span class="hljs-string">'/user'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>}); <span class="hljs-comment">// Auth path???</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
               <p>Modify existing user</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>app.patch(<span class="hljs-string">'/user/:userid'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});
+            <div class="content"><div class='highlight'><pre>app.patch(<span class="hljs-string">'/auth/user/:userid'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Run Mocha, Jasmine (or other testing framework) tests and output as HTML</p>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.get(<span class="hljs-string">'/tests'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> {</span>res.end(<span class="hljs-string">"Do all unit tests and output as HTML."</span>)});
 
 
 http.createServer(app).listen(app.get(<span class="hljs-string">'port'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>

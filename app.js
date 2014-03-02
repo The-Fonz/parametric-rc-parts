@@ -5,7 +5,7 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-
+var stylus = require('stylus'); // CSS preprocessor
 var app = express();
 
 /**
@@ -23,8 +23,8 @@ var user = require('./routes/user');
 
 // all environments
 var PRT = null;
-if ('development' == app.get('env')) PRT = 3000;
-else PRT = 80;
+if ('development' == app.get('env')) PRT = 3000; // Development needs another port than 80
+else PRT = 80; // In production, we use the standard HTML port 80
 app.set('port', process.env.PORT || PRT);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -33,55 +33,78 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+// Configure Stylus CSS preprocessor. Note the paths!
+app.use('/public/stylesheets', stylus.middleware({
+  src: __dirname + '/resources/stylesheets',
+  dest: __dirname + '/public/stylesheets',
+  debug: true,
+  force: true,
+}));
+// First check if a static file is requested...
+app.use('/public', express.static(__dirname + '/public'));
+
+// Injecting the app.router here makes the routes take precedence!
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Add a google analytics error sending handler here for production
 
 // development only
 if ('development' == app.get('env')) {
-	app.use(express.errorHandler());
+	app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 }
 
-// Match anything that does not end in .json
-// See http://stackoverflow.com/questions/21962329/regex-that-matches-anything-not-ending-in-json
-// Assume that all requests except for the ones ending in .json
-// are requesting an html page, thus send header??????
-//app.get(/^(?!.*\.json$).*$/, routes.index);
-
+// Make database
+// -------------
+var Database = require('./database').Database;
+var dataBase = new Database( "mongodb://localhost:27017/exampleDb", function ( err, db ) {
+	// Handle error: if (err) display error
+	if (err) {
+    //console.error("Database error!"); // Is this necessary? Logging-wise?
+    throw new Error('Database error!'); // Crash process
+  }
+});
 
 // Routes
 // ------
+// Inject database for all requests! Injection using new Module(app, db) is
+// also possible, but I think that the db object gets copied. My database
+// object relies on a callback to provide its self.db object, so maybe this
+// hasn't been instantiated yet so doesn't get copied with new Module(app,db).
+app.all("*", function( req, res, next ) {
+	req.db = dataBase;
+  next();
+});
 // Main page
 app.get('/', require('./presenters/index').index)
 // Part individual page
 app.get('/part/:partid', require('./presenters/part/partPage').get ); // presenter.subject.jsfile.function
 // Part Three.js JSON
-// require('./presenters/part/threeJson')
-app.get('/part/:partid/threejson', function (req, res) {res.end("Three.js JSON # " + req.params.partid)});
+app.get('/part/:partid/threejson', require('./presenters/part/threeJson').get );
 // Part dependency graph for display with some JS Graphviz library
 app.get('/part/:partid/graphviz', function (req, res) {res.end("Graphviz requested for part # " + req.params.partid)});
 
 // Create page. Authenticate when submitting?
-app.get('/create', function(){});
+app.get('/create', function(){}); // Auth path????
 
 // Routes that require authentication
 // ----------------------------------
 // Create new part (called from '/create' page) by uploading FreeCAD
-app.post('/part', function () {});
+app.post('/auth/part', function () {});
 // Modify part (partially)
-app.patch('/part/:partid', function () {});
+app.patch('/auth/part/:partid', function () {});
 // Delete part
-app.delete('/part/:partid', function () {});
+app.delete('/auth/part/:partid', function () {});
 
 // My Parts, user obj??? Require authentication???
 // Use passportjs (added as dependency)
-app.get('/myparts', function () {});
+app.get('/auth/myparts', function () {});
 
 // Get user overview page (public?)
 app.get('/user/:userid', function () {});
 // Make new user
-app.post('/user', function () {});
+app.post('/user', function () {}); // Auth path???
 // Modify existing user
-app.patch('/user/:userid', function () {});
+app.patch('/auth/user/:userid', function () {});
 
 // Run Mocha, Jasmine (or other testing framework) tests and output as HTML
 app.get('/tests', function (req, res) {res.end("Do all unit tests and output as HTML.")});

@@ -10,7 +10,8 @@
     "jade": "*",
     "mongodb": "*",
     "always": "*",
-    "passport": "*"
+    "passport": "*",
+    "stylus": "*"
   },
   "devDependencies": {
     "jasmine-node": "*"

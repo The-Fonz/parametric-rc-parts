@@ -1,0 +1,108 @@
+// Load fonts
+@css {
+	@import url(http://fonts.googleapis.com/css?family=Exo+2:400,100,200,300,500,600,700,800,900);
+}
+
+// Require snippets
+@require 'snippets/*'
+
+/* Theme:
+http://mudcu.be/sphere/# analogous websmart
+*/
+t1 = #FA6 // orange
+t2 = #FD6 // oker yellow
+// #FF6 yellow
+t3 = #AF6 // light green
+t4 = #6F7 // aquamarine green
+t5 = #6FC // soft blue
+
+tag-color = #EAEAEA
+link-color = black
+
+border-radius()
+	-webkit-border-radius arguments
+	-moz-border-radius arguments
+	border-radius arguments
+
+margin-side( n )
+	margin-left n
+	margin-right n
+margin-vert( n )
+	margin-top n
+	margin-bottom n
+padding-side( n )
+	padding-left n
+	padding-right n
+padding-vert( n )
+	padding-top n
+	padding-bottom n
+
+@media (max-width: 768px)
+	.container.productgrid
+		max-width: 440px
+
+.productgrid .product span.tag
+	background tag-color
+	border-radius 4px
+	padding-vert 3px
+	padding-side 5px
+	margin-side 3px
+
+.container
+	max-width 970px
+
+header
+	padding: .8em
+	padding-left: 1.6em
+
+header h1, nav
+	font-family: 'Exo 2', sans-serif
+	font-weight: 200
+
+header h1
+	font-size: 3.6em
+	margin-top: .4em
+	margin-bottom: .4em
+header h1 strong
+	font-weight: 700
+header h1 a
+	color: inherit
+header h1 a:hover
+	text-decoration: none
+	color: inherit
+
+nav
+	font-weight: 700
+	font-size: 1.2em
+
+.productgrid
+	margin-top: 1.5em
+
+.productgrid .product
+	padding: 1em
+	font-family: 'Exo 2', sans-serif
+
+.productgrid .product h1
+	font-size: 2em
+	font-weight: 700
+	margin-top: .3em
+	margin-bottom: .3em
+
+.productgrid .product a 
+	text-decoration: none
+	color: link-color
+
+.productgrid .product p
+	color: #666
+
+.productgrid .product img
+	max-width: 100%
+
+body > footer
+	padding-top: 2em
+	padding-bottom: 2em
+	margin-top: 2em
+	color: #777
+	text-align: center
+	border-top: 1px solid #e5e5e5
+	background: linear-gradient(white, #EEE)

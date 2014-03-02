@@ -1,61 +1,205 @@
-/* Tryout css */
-
 @import url(http://fonts.googleapis.com/css?family=Exo+2:400,100,200,300,500,600,700,800,900);
+.partRenderCanvas img {
+  display: block;
+  margin: 0 auto;
+}
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  float: none;
+}
+.loadinfo {
+  position: absolute;
+  color: #fff;
+  width: 100%;
+  text-align: center;
+  top: 50%;
+  margin-top: -0.5em;
+  text-shadow: 0 0 6px #000;
+}
+@-webkit-keyframes spinner1 {
+	  from {
+	    -webkit-transform: rotate(0deg);
+	  }
 
+	  to {
+	    -webkit-transform: rotate(360deg);
+	  }
+	}
+	@-moz-keyframes spinner1 {
+	  from {
+	    -moz-transform: rotate(0deg);
+	  }
+
+	  to {
+	    -moz-transform: rotate(360deg);
+	  }
+	}
+	@-o-keyframes spinner1 {
+	  from {
+	    -o-transform: rotate(0deg);
+	  }
+
+	  to {
+	    -o-transform: rotate(360deg);
+	  }
+	}
+	@keyframes spinner1 {
+	  from {
+	    transform: rotate(0deg);
+	  }
+
+	  to {
+	    transform: rotate(360deg);
+	  }
+	}
+	@-webkit-keyframes spinner2 {
+	  from {
+	    -webkit-transform: rotate(0deg);
+	  }
+
+	  to {
+	    -webkit-transform: rotate(-360deg);
+	  }
+	}
+	@-moz-keyframes spinner2 {
+	  from {
+	    -moz-transform: rotate(0deg);
+	  }
+
+	  to {
+	    -moz-transform: rotate(-360deg);
+	  }
+	}
+	@-o-keyframes spinner2 {
+	  from {
+	    -o-transform: rotate(0deg);
+	  }
+
+	  to {
+	    -o-transform: rotate(-360deg);
+	  }
+	}
+	@keyframes spinner2 {
+	  from {
+	    transform: rotate(0deg);
+	  }
+
+	  to {
+	    transform: rotate(-360deg);
+	  }
+	}
+	.spinner {
+	  position: absolute;
+	  width: 54px;
+	  height: 54px;
+	  top: 50%;
+	  left: 50%;
+	  margin-left: -27px;
+	  margin-top: -27px;
+	}
+	.spinner:after, .spinner:before {
+	  position: fixed;
+	  content: "";
+	  border: 2px solid #FFF;
+	  width: 52px;
+	  height: 52px;
+	}
+	.spinner:after {
+	  -webkit-animation: spinner1 2.5s linear infinite;
+	  -moz-animation: spinner1 2.5s linear infinite;
+	  animation: spinner1 2.5s linear infinite;
+	}
+	.spinner:before {
+	  width: 64px;
+	  height: 64px;
+	  margin-left: -6.5px;
+	  margin-top: -6.5px;
+	  -webkit-animation: spinner2 2.5s linear infinite;
+	  -moz-animation: spinner2 2.5s linear infinite;
+	  animation: spinner2 2.5s linear infinite;
+	}
+/* Theme:
+http://mudcu.be/sphere/# analogous websmart
+*/
+@media (max-width: 768px) {
+  .container.productgrid {
+    max-width: 440px;
+  }
+}
+.productgrid .product span.tag {
+  background: #eaeaea;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
 .container {
-	max-width: 970px;
+  max-width: 970px;
 }
-
 header {
-	padding: .8em;
-	padding-left: 1.6em;
+  padding: 0.8em;
+  padding-left: 1.6em;
 }
-header h1, nav {
-	font-family: 'Exo 2', sans-serif;
-	font-weight: 200;
+header h1,
+nav {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 200;
 }
 header h1 {
-	font-size: 3.6em;
-	margin-top: .4em;
-	margin-bottom: .4em;
+  font-size: 3.6em;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
 }
 header h1 strong {
-	font-weight: 700;
+  font-weight: 700;
+}
+header h1 a {
+  color: inherit;
+}
+header h1 a:hover {
+  text-decoration: none;
+  color: inherit;
 }
 nav {
-	font-weight: 700;
-	font-size: 1.2em;
+  font-weight: 700;
+  font-size: 1.2em;
 }
-
 .productgrid {
-	margin-top: 1.5em;
+  margin-top: 1.5em;
 }
 .productgrid .product {
-	padding: 1em;
-	font-family: 'Exo 2', sans-serif;
+  padding: 1em;
+  font-family: 'Exo 2', sans-serif;
 }
 .productgrid .product h1 {
-	font-size: 2em;
-	font-weight: 700;
-	margin-top: .3em;
-	margin-bottom: .3em;
+  font-size: 2em;
+  font-weight: 700;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
 }
 .productgrid .product a {
-	text-decoration: none;
+  text-decoration: none;
+  color: #000;
 }
 .productgrid .product p {
-	color: #666;
+  color: #666;
 }
 .productgrid .product img {
-	max-width: 100%;
+  max-width: 100%;
 }
-
 body > footer {
-	padding-top: 2em;
-	padding-bottom: 2em;
-	margin-top: 2em;
-	color: #777;
-	text-align: center;
-	border-top: 1px solid #e5e5e5;
-	background: linear-gradient(white, #EEE);
+  padding-top: 2em;
+  padding-bottom: 2em;
+  margin-top: 2em;
+  color: #777;
+  text-align: center;
+  border-top: 1px solid #e5e5e5;
+  background: linear-gradient(#fff, #eee);
 }
