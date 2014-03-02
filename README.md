@@ -13,3 +13,9 @@ For making backups, it might be useful to use LVM ([mongodb instructions](http:/
 
 ## Behaviour Driven Development ##
 Fancy term, but it works great. If you first specify behaviour and then implement it, it's much easier to see what you've done and to fix stuff. I use *Jasmine* for this. The tests can be found in the folder `/spec`. I use dummy data objects to test the database. Frontend testing can be done with *Casper*, but I think that just browser-testing the front-end will work just fine. For the backend however, it's damn handy.
+
+## CSS preprocessor ##
+I started using Stylus as CSS preprocessor. Its syntax is similar to *Jade*, and those are both similar to *Python*. It is integrated into the *Node* app and re-compiles the `.styl` file on each first request, or on each request (using the `forced` option).
+
+## CADview ##
+The 'CADview' class in `CADview.js` contains all functionality for retrieving and rendering a part from `part/PARTID/threejson`. It uses *Three.js* to do this. Packaging this functionality in a module enables easy re-use and eventually open-sourcing. Future features can include: toggling wireframe view, a model composition tree with checkboxes to turn parts of the model on/off, reflective shading, and other stuff. Maybe the best philosophy is to try and come close to a CAD view. That means **enabling the user to have the most accurate interpretation of the object's geometry and size**.
