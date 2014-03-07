@@ -1,5 +1,5 @@
 // Enter test entries into database
-var Database = require('../Database').Database,
+var Database = require('../database').Database,
         fs = require('fs');
 
 
