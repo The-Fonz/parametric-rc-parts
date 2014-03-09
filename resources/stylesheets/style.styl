@@ -3,9 +3,6 @@
 	@import url(http://fonts.googleapis.com/css?family=Exo+2:400,100,200,300,500,600,700,800,900);
 }
 
-// Require snippets
-@require 'snippets/*'
-
 /* Theme:
 http://mudcu.be/sphere/# analogous websmart
 */
@@ -16,8 +13,12 @@ t3 = #AF6 // light green
 t4 = #6F7 // aquamarine green
 t5 = #6FC // soft blue
 
-tag-color = #EAEAEA
+tag-color = #0089e0 // Nice blue
+tag-text-color = #FFF // White
 link-color = black
+
+// Require snippets
+@require 'snippets/*'
 
 border-radius()
 	-webkit-border-radius arguments
@@ -40,13 +41,6 @@ padding-vert( n )
 @media (max-width: 768px)
 	.container.productgrid
 		max-width: 440px
-
-.productgrid .product span.tag
-	background tag-color
-	border-radius 4px
-	padding-vert 3px
-	padding-side 5px
-	margin-side 3px
 
 .container
 	max-width 970px

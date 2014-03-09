@@ -21,7 +21,9 @@ block content
           //- Make a link to the part page
           a(href='/part/#{part._id}')
             h1= part.title
-            p= part.description
+            p.description= part.description
           //- Print tags nicely
-          each tag in part.tags
-            span.tag= tag
+          ul.tags
+            each tag in part.tags
+              li.tag
+                a= tag

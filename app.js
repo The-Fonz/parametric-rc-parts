@@ -56,13 +56,8 @@ if ('development' == app.get('env')) {
 // Make database
 // -------------
 var Database = require('./database').Database;
-var dataBase = new Database( "mongodb://localhost:27017/exampleDb", function ( err, db ) {
-	// Handle error: if (err) display error
-	if (err) {
-    //console.error("Database error!"); // Is this necessary? Logging-wise?
-    throw new Error('Database error!'); // Crash process
-  }
-});
+var dataBase = new Database( "mongodb://localhost:27017/exampleDb" );
+dataBase.init().done(); // Inits and throws any unhandled errors by calling done() on the promise
 
 // Routes
 // ------

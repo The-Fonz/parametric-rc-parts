@@ -11,7 +11,8 @@
     "mongodb": "*",
     "always": "*",
     "passport": "*",
-    "stylus": "*"
+    "stylus": "*",
+    "when": "*"
   },
   "devDependencies": {
     "jasmine-node": "*"
