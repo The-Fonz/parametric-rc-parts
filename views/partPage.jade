@@ -5,7 +5,7 @@ block content
     h1= part.title
     .row
       .col-xs-12.col-md-6
-        .partRenderCanvas
+        #partRenderCanvas
           //- Display an initially hidden loading overlay
           //- .hidden from Bootstrap
           .overlay
@@ -15,8 +15,11 @@ block content
             .loadinfo
               | Loading 3D view...
           img(src='/public/images/thumbnails/#{part._id}.gif')
-      .col-xs-12.col-md-6
-        p Here come the sliders.
+      #parameterModule.col-xs-12.col-md-6
+        //- If users see this, then the parameter module wasn't initalized properly
+        //-p.alert.alert-danger Something went wrong when loading this page :(
+        #presetDropdownBox
+        #sliderBox
     .row
       .col-xs-12.col-md-6
         p= part.description
@@ -30,4 +33,6 @@ block append scripts
   script(src="/public/javascripts/three.js")
   script(src="/public/javascripts/OrbitControls.js")
   script(src="/public/javascripts/CADview.js")
+  //- Slider js, slider CSS is integrated into main stylesheet
+  script(src="/public/javascripts/bootstrap-slider.min.js")
   script(src="/public/javascripts/partPage.js")

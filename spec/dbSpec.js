@@ -24,31 +24,52 @@ describe("Database", function () {
 		expect( dabase.db ).not.toBeNull();
 	});
 
-	var dbstork = null;
+	var dbstorkmeta = null;
+	var dbstorkthreejson = null;
 	it("test model should be there", function () {
-		dbstork = require('../spec/testModels/dbobject-stork-test.json');
-		expect( dbstork.owner_id ).toBe("AE5400DB"); // Hard-coded check
+		dbstorkmeta = require('../spec/testModels/dbobject-stork-test-partmeta.json');
+		dbstorkthreejson = require('../spec/testModels/dbobject-stork-test-threejson.json');
+		expect( dbstorkmeta.owner_id ).toBe("AE5400DB"); // Hard-coded check
+		expect( dbstorkthreejson.metadata.formatVersion ).toBe( 3 ); // Hard-coded check
 	});
 
 	var dbstork_id = null;
-	it("should be able to insert the test model", function ( finished ) {
-		var p = dabase.insertPart( dbstork );
+	it("should be able to insert the test part metadata", function ( finished ) {
+		var p = dabase.insertPartMeta( dbstorkmeta );
 		nodefn.bindCallback( p, function ( err, result ) {
 			expect( err ).toBeNull();
-			// result is an array of records inserted
-			//console.log(result[0]._id);
-			expect( result[0] ).toEqual( jasmine.objectContaining( dbstork ) );
+			// result is an array of records inserted //console.log(result[0]._id);
+			expect( result[0] ).toEqual( jasmine.objectContaining( dbstorkmeta ) );
 			dbstork_id = result[0]._id; // Remember id for later retrieval
 			expect( dbstork_id ).not.toBeNull();
 			finished(); // Asynchronous test so we must explicitly say to continue.
 		});
 	});
+	it("should be able to insert the test part std three mesh", function ( finished ) {
+		var p = dabase.insertPartStdThreeMesh( dbstork_id, dbstorkthreejson );
+		nodefn.bindCallback( p, function ( err, result ) {
+			expect( err ).toBeNull();
+			// result is an array of records inserted //console.log(result[0]._id);
+			expect( result[0] ).toEqual( jasmine.objectContaining( dbstorkthreejson ) );
+			//dbstork_id = result[0]._id; // Remember id for later retrieval
+			//expect( dbstork_id ).not.toBeNull();
+			finished(); // Asynchronous test so we must explicitly say to continue.
+		});
+	});
 
-	it("should be able to retrieve this very model", function ( finished ) {
-		var p = dabase.findOnePartById( dbstork_id );
+	it("should be able to retrieve the inserted part metadata", function ( finished ) {
+		var p = dabase.findPartMeta( dbstork_id );
 		nodefn.bindCallback( p, function ( err, doc ) {
 			expect( err ).toBeNull();
-			expect( doc ).toEqual( jasmine.objectContaining( dbstork ) );
+			expect( doc ).toEqual( jasmine.objectContaining( dbstorkmeta ) );
+			finished();
+		});
+	});
+	it("should be able to retrieve the inserted threejson mesh", function ( finished ) {
+		var p = dabase.findStdThreeMesh( dbstork_id );
+		nodefn.bindCallback( p, function ( err, doc ) {
+			expect( err ).toBeNull();
+			expect( doc ).toEqual( jasmine.objectContaining( dbstorkthreejson ) );
 			finished();
 		});
 	});

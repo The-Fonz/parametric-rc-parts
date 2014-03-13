@@ -34,6 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 // Configure Stylus CSS preprocessor. Note the paths!
+// TODO: Only use debug and force in development environment
 app.use('/public/stylesheets', stylus.middleware({
   src: __dirname + '/resources/stylesheets',
   dest: __dirname + '/public/stylesheets',

@@ -1,5 +1,5 @@
 ## Basic Install ##
-This is **Parametric RC Parts**. Install by running `npm install`, this will install dependencies in folder `node_module`. Use `npm start` to run using `package.json` `start` property, which is set to use the package `always` to run `app.js`, it restarts the process automatically and listens for file changes.
+This is **Parametric RC Parts**. Install by running `npm install` and `bower install`, this will install dependencies in folders `node_module` and `bower_components`. Use `npm start` to run using `package.json` `start` property, which is set to use the package `always` to run `app.js`, it restarts the process automatically and listens for file changes.
 
 *Docco* is used for generating documentation, it simply uses the comments in the code. It can be installed using `npm install -g docco` and used like `docco file.js`.
 

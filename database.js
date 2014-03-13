@@ -13,7 +13,8 @@ Database = function ( mongoDbUrl ) {
 	self = this; // VERY IMPORTANT
 	self.mongoDbUrl = mongoDbUrl;
 	self.db = null;
-	self.partsColl = null; // Hold collections in object as well
+	self.partsMetaColl = null; // Hold collections in object as well
+	self.partsStdThreeMeshColl = null;
 	// TODO: More collections, split part metadata and json obj for speed
 }
 Database.prototype.init = function (  ) {
@@ -23,36 +24,55 @@ Database.prototype.init = function (  ) {
 			d.reject(new Error("Database connect error"));
 		} else {
 			self.db = db; // self.db, not this.db!!!
-			self.partsColl = db.collection("parts");
+			self.partsMetaColl = db.collection("partsMeta");
+			self.partsStdThreeMeshColl = db.collection("partsStdThreeMesh");
 			d.resolve( db ); // Return db???
 		}
 	}
 	MongoClient.connect( self.mongoDbUrl , cB );
 	return d.promise;
 }
-// Inserts the JSON object into the parts collection
-Database.prototype.insertPart = function ( jsonObject ) {
+// Inserts the JSON object into the parts collection. id is optional
+Database.prototype._insert = function ( collection, jsonObject, id ) {
 	var d = when.defer();
 	function checkCb ( err, result ) {
 		if (err) d.reject( new Error("Error when inserting part") );
 		else d.resolve( result );
 	}
-	self.partsColl.insert( jsonObject, checkCb );
+	// If id is given, set the object's id
+	if ( id ) jsonObject._id = id;
+	collection.insert( jsonObject, checkCb );
 	return d.promise;
 }
-// Find one part by its ID.
-Database.prototype.findOnePartById = function ( id ) {
+// Insert part metadata
+Database.prototype.insertPartMeta = function ( jsonObject ) {
+	return self._insert ( self.partsMetaColl, jsonObject ) // Returns promise
+}
+// Insert standard Three.js JSON mesh. Must give an id (that matches the part metadata's)
+Database.prototype.insertPartStdThreeMesh = function ( id, jsonThreeMesh ) {
+	return self._insert ( self.partsStdThreeMeshColl, jsonThreeMesh, id ) // Returns promise
+}
+// Find one part by its ID. The underscore indicates that it's a private method.
+Database.prototype._findOneById = function ( collection, id ) {
 	var d = when.defer();
 	function cB (err, doc) {
-		if (err || !doc) d.reject( new Error("Part not found or error") );
+		if (err || !doc) d.reject( new Error("Not found or error") );
 		else d.resolve( doc );
 	}
 	// If id is a string and not an ObjectID... convert it
 	if ( typeof(id) === "string" ) {
 		id = ObjectID(id);
 	}
-	self.partsColl.findOne( { _id: id }, cB );
+	collection.findOne( { _id: id }, cB );
 	return d.promise;
+}
+// Find part metadata by ID
+Database.prototype.findPartMeta = function ( id ) {
+	return self._findOneById( self.partsMetaColl, id ) // Returns promise
+}
+// Find standard Three.js JSON mesh
+Database.prototype.findStdThreeMesh = function ( id ) {
+	return self._findOneById( self.partsStdThreeMeshColl, id ) // Returns promise
 }
 // Preliminary function to search multiple parts. Needs filters. And spec.
 Database.prototype.findParts = function ( n ) {
@@ -64,7 +84,7 @@ Database.prototype.findParts = function ( n ) {
 		else if (!docs) d.reject( new Error("doc is empty") );
 		else d.resolve( docs );
 	}
-	self.partsColl.find( {}, { limit: n } ).toArray( cB );
+	self.partsMetaColl.find( {}, { limit: n } ).toArray( cB );
 	return d.promise;
 }
 // Close the database to avoid many connections building up.

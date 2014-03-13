@@ -37,24 +37,24 @@ function CADview ( target ) {
 		//cube.rotation.x += 0.1;
 		//cube.rotation.y += 0.1;
 		directionalLight.position = camera.position;
-		console.log("RENDER");
+		//console.log("RENDER");
 		renderer.render(scene, camera);
 	}
 
 	// Use the GREAT OrbitControls.js
 	controls = new THREE.OrbitControls( camera );
-	console.log(controls)
+	//console.log(controls)
 	controls.rotateSpeed = 2; // Default 1
 	controls.zoomSpeed = 2; // Default 1
 	controls.target.set( 0, 0, 0 );
 	controls.addEventListener( 'change', self.render );
 	// Make it pan on shift+mousedown (controls.pan(dX,dY))?
-	console.log(controls.object._quaternion);
-	console.log(directionalLight);
+	//console.log(controls.object._quaternion);
+	//console.log(directionalLight);
 
 	self.addModelToScene = function ( geom, materials ) {
 		// Do something with it
-		console.log("Part has been loaded");
+		//console.log("Part has been loaded");
 		//console.log(geometry)
 		var material = new THREE.MeshLambertMaterial( {color: 0x999999} );
 		//material.wireframe = true;
@@ -65,7 +65,7 @@ function CADview ( target ) {
 		//renderer.render(scene, camera);
 		bS = mesh.geometry.boundingSphere.radius;
 		if (bS) {
-			console.log(camera);
+			//console.log(camera);
 			// Position camera orthogonally
 			camera.position = new THREE.Vector3(-bS,bS,bS);
 			// Look at zero
