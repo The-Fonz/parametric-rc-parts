@@ -29,6 +29,7 @@ block content
       .col-xs-12
         p Comments here. Aligned in the middle.
 block append scripts
+  //- Old way to include scripts
   //- Change to // on production
   script(src="/public/javascripts/three.js")
   script(src="/public/javascripts/OrbitControls.js")
@@ -36,3 +37,11 @@ block append scripts
   //- Slider js, slider CSS is integrated into main stylesheet
   script(src="/public/javascripts/bootstrap-slider.min.js")
   script(src="/public/javascripts/partPage.js")
+  //- New but very cpu-heavy way to include scripts
+    | <script type="text/javascript">
+    include ../public/javascripts/three.js
+    include ../public/javascripts/OrbitControls.js
+    include ../public/javascripts/CADview.js
+    include ../public/javascripts/bootstrap-slider.min.js
+    include ../public/javascripts/partPage.js
+    | </script>

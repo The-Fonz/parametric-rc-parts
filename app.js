@@ -34,6 +34,8 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 // Configure Stylus CSS preprocessor. Note the paths!
+// TODO: Do gzipping by using app.use(express.compress())
+// TODO: Cache using app.use(....express.static(..., {maxAge: 86400000}))
 // TODO: Only use debug and force in development environment
 app.use('/public/stylesheets', stylus.middleware({
   src: __dirname + '/resources/stylesheets',
