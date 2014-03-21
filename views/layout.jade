@@ -21,33 +21,20 @@ html
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
       <![endif]
   body
-    .container
-      // Header
-      header
-        h1
-          a(href="/")
+    header.banner.navbar.navbar-default.navbar-static-top(role="banner")
+      .container
+        .navbar-header
+          a.navbar-brand(href="/")
             | Parametric
             strong RC
-            | .com
-      // Menu bar
-      nav.navbar.navbar-default(role='navigation')
-        .container-fluid
-          //.navbar-header
-          //  a.navbar-brand(href='#') Brand
+        nav(role="navigation")
           ul.nav.navbar-nav
             li.active
-              a(href='#') Parts
+              a(href="/") Parts
             li
-              a(href='#') Create
-          form.hidden-xs.navbar-form.navbar-left(role='search')
-            .form-group
-              input.form-control(type='text', placeholder='Search for tags')
-            button.btn.btn-default(type='submit') Submit
-          ul.nav.navbar-nav.navbar-right
+              a(href="#") Create
             li
-              a(href='#') My Parts
-          // /.navbar-collapse
-        // /.container-fluid
+              a(href="#") My Parts
 
     block content
 

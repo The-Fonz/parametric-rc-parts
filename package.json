@@ -11,7 +11,7 @@
     "mongodb": "*",
     "always": "*",
     "passport": "*",
-    "stylus": "*",
+    "less-middleware": "*",
     "when": "*"
   },
   "devDependencies": {

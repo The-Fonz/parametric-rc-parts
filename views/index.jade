@@ -2,8 +2,11 @@ extends layout
 
 block content
   section.subheader.container
-    | Hi there! Welcome to #{title}. This is an example page mockup.
-    | Parts displayed: #{parts.length}
+    p.
+      Hi there! Welcome to #{title}. This is an example page mockup.
+      Parts displayed: #{parts.length}
+    //- TODO: remove
+    br
   //- Example content
   section.container.productgrid
     .row
@@ -17,13 +20,12 @@ block content
         //- The actual product box
         .product.col-md-3.col-sm-4.col-xs-12
           //- Part._id is MongoDB id
-          img(src='/public/images/thumbnails/#{part._id}.gif')
+          img.img-responsive(src='/public/images/thumbnails/#{part._id}.gif')
           //- Make a link to the part page
           a(href='/part/#{part._id}')
             h1= part.title
             p.description= part.description
           //- Print tags nicely
-          ul.tags
+          div
             each tag in part.tags
-              li.tag
-                a= tag
+              span.label.label-info= tag

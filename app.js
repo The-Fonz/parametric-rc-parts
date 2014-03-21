@@ -5,7 +5,7 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var stylus = require('stylus'); // CSS preprocessor
+var lessMiddleware = require('less-middleware'); // CSS preprocessor
 var app = express();
 
 /**
@@ -36,13 +36,9 @@ app.use(express.methodOverride());
 // Configure Stylus CSS preprocessor. Note the paths!
 // TODO: Do gzipping by using app.use(express.compress())
 // TODO: Cache using app.use(....express.static(..., {maxAge: 86400000}))
-// TODO: Only use debug and force in development environment
-app.use('/public/stylesheets', stylus.middleware({
-  src: __dirname + '/resources/stylesheets',
-  dest: __dirname + '/public/stylesheets',
-  debug: true,
-  force: true,
-}));
+app.use('/public',
+  lessMiddleware( path.join(__dirname, '/public') )
+);
 // First check if a static file is requested...
 app.use('/public', express.static(__dirname + '/public'));
 
