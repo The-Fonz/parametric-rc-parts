@@ -1,20 +1,27 @@
 {
   "name": "parametric-rc-parts-com",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "always app.js"
   },
   "dependencies": {
-    "express": "3.4.8",
+    "express": "~3.4.8",
     "jade": "*",
     "mongodb": "*",
     "always": "*",
     "passport": "*",
-    "less-middleware": "*",
     "when": "*"
   },
   "devDependencies": {
-    "jasmine-node": "*"
+    "jasmine-node": "*",
+    "grunt": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-nodeunit": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-less": "*",
+    "grunt-browserify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-concat": "*"
   }
 }

@@ -5,13 +5,7 @@ html
     meta(charset='utf-8')
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    //- Include stylesheets directly in HTML to lessen requests (does improve download size)
-      | <style type='text/css'>
-      include ../public/stylesheets/bootstrap-3.1.1.min.css
-      include ../public/stylesheets/style.css
-      | </style>
-    //- Include stylesheets from CDN and local
-    link(rel='stylesheet', href='http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
+    //- Include stylesheet
     link(rel='stylesheet', href='/public/stylesheets/style.css')
     //
       HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
@@ -42,4 +36,5 @@ html
       p This is the footer.
 
     block scripts
-      script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js")
+      //- Only load bundle.js on pages where it's needed
+      //-script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js")

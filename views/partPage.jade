@@ -1,47 +1,49 @@
 extends layout
 
 block content
-  section.container
+  section.container.part-page
     h1= part.title
     .row
-      .col-xs-12.col-md-6
-        #partRenderCanvas
-          //- Display an initially hidden loading overlay
-          //- .hidden from Bootstrap
-          .overlay
-            //- .spinner from spinner.styl
-            //.spinner
-            //- From partPage.styl
-            .loadinfo
-              | Loading 3D view...
-          img(src='/public/images/thumbnails/#{part._id}.gif')
-      #parameterModule.col-xs-12.col-md-6
+      .col-xs-12.col-sm-6
+        .thumbnail
+          #partRenderCanvas
+            .overlay
+              .loadinfo
+                | Loading 3D view...
+            img(src='/public/images/thumbnails/#{part._id}.gif')
+      #parameterModule.col-xs-12.col-sm-6
         //- If users see this, then the parameter module wasn't initalized properly
         //-p.alert.alert-danger Something went wrong when loading this page :(
-        #presetDropdownBox
-        #sliderBox
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title
+              span Parameters
+          .panel-body
+            form.form-horizontal(role='form')
+                .form-group
+                    label.col-md-4.control-label(for='inputEmail3') Email
+                    .col-sm-8
+                      input.sl(type='text', value='', data-slider-min='-20',
+                        data-slider-max='20', data-slider-step='1',
+                        data-slider-value='-14')
+
+
     .row
-      .col-xs-12.col-md-6
+      .col-xs-12.col-sm-6
         p= part.description
-      .col-xs-12.col-md-6
+      .col-xs-12.col-sm-6
         p Specifications, order, etc.
     .row
       .col-xs-12
         p Comments here. Aligned in the middle.
+
+
 block append scripts
-  //- Old way to include scripts
-  //- Change to // on production
-  script(src="/public/javascripts/three.js")
-  script(src="/public/javascripts/OrbitControls.js")
-  script(src="/public/javascripts/CADview.js")
-  //- Slider js, slider CSS is integrated into main stylesheet
-  script(src="/public/javascripts/bootstrap-slider.min.js")
-  script(src="/public/javascripts/partPage.js")
-  //- New but very cpu-heavy way to include scripts
-    | <script type="text/javascript">
-    include ../public/javascripts/three.js
-    include ../public/javascripts/OrbitControls.js
-    include ../public/javascripts/CADview.js
-    include ../public/javascripts/bootstrap-slider.min.js
-    include ../public/javascripts/partPage.js
-    | </script>
+  script(src="/public/javascripts/bundle.js")
+  //- Now initialize the part page with the code in bundle.js
+  script(type="text/javascript").
+    $(function() {
+      PRC_initPartPage();
+
+      $('.sl').slider();
+    });

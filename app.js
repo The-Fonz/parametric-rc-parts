@@ -1,72 +1,88 @@
 
-/**
- * Module dependencies
-   -------------------*/
+// # Dependencies
 var express = require('express');
 var http = require('http');
 var path = require('path');
 var lessMiddleware = require('less-middleware'); // CSS preprocessor
 var app = express();
 
-/**
- * All routes
-   ----------*/
-/*
-var routes = {};
-// Routes are defined per path, so any request starting with /part is routed by ./routes/part.
-// In this example, ./routes/part then routes to a presenter that does the work.
-routes.index = require('./routes/index');
-routes.part = require('./routes/part');
-// User specific routes
-var user = require('./routes/user');
-*/
+/* Doesn't work, ALways restarts each time on bundle.js change!
+// ### Browserify!
+var browserify = require('browserify');
+var b = browserify();
+b.add('./source/javascripts/main.js');
+// Compile once (on start or restart)
+var fs = require('fs');
+var UglifyJS = require("uglify-js");
+b.bundle( function( err, src ) {
 
-// all environments
+	var bundle = './public/javascripts/bundle.js';
+
+	try {
+		var cur = fs.readFileSync( bundle, 'utf8' );
+	} catch (Error) {
+		console.error("File " + bundle + " does not exist");
+	}
+	
+	if ( cur !== src ) {
+		fs.writeFileSync( './public/javascripts/bundle.js', src );
+		console.log("Browserified bundle.js");
+		// Minify
+		var srcmin = UglifyJS.minify( src, {fromString: true});
+		fs.writeFileSync( './public/javascripts/bundle.min.js', srcmin);
+		console.log("Minified bundle.min.js");
+	} else {
+		console.log("bundle.js did not change");
+	}
+});*/
+
+// ## All environments
 var PRT = null;
 if ('development' == app.get('env')) PRT = 3000; // Development needs another port than 80
 else PRT = 80; // In production, we use the standard HTML port 80
-app.set('port', process.env.PORT || PRT);
+app.set('port', process.env.PORT || PRT); // Set port
+// Configuration of views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+// Middleware definitions
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-// Configure Stylus CSS preprocessor. Note the paths!
+
 // TODO: Do gzipping by using app.use(express.compress())
-// TODO: Cache using app.use(....express.static(..., {maxAge: 86400000}))
+// Configure Stylus CSS preprocessor. Note the paths!
+/*
 app.use('/public',
   lessMiddleware( path.join(__dirname, '/public') )
-);
-// First check if a static file is requested...
+);*/
+// First check if a static file is requested, before routing.
+// TODO: Cache using app.use(....express.static(..., {maxAge: 86400000}))
 app.use('/public', express.static(__dirname + '/public'));
 
-// Injecting the app.router here makes the routes take precedence!
+// The order in which middleware is defined, matters.
+// Doing `app.use(app.router)` first goes through all routes before other middleware.
 app.use(app.router);
 
-// Add a google analytics error sending handler here for production
+// Add a google analytics? error sending handler here for production
 
-// development only
+// If in development, show detailed error pages.
 if ('development' == app.get('env')) {
 	app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 }
 
-// Make database
-// -------------
+// ## Make database
 var Database = require('./database').Database;
 var dataBase = new Database( "mongodb://localhost:27017/exampleDb" );
 dataBase.init().done(); // Inits and throws any unhandled errors by calling done() on the promise
 
-// Routes
-// ------
-// Inject database for all requests! Injection using new Module(app, db) is
-// also possible, but I think that the db object gets copied. My database
-// object relies on a callback to provide its self.db object, so maybe this
-// hasn't been instantiated yet so doesn't get copied with new Module(app,db).
+
+// # Routes
+// Inject database for all requests. Can also be done by passing to module on require(...) call.
 app.all("*", function( req, res, next ) {
 	req.db = dataBase;
-  next();
+	next();
 });
 // Main page
 app.get('/', require('./presenters/index').index)
@@ -104,6 +120,7 @@ app.patch('/auth/user/:userid', function () {});
 app.get('/tests', function (req, res) {res.end("Do all unit tests and output as HTML.")});
 
 
+// # Serve
 http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
