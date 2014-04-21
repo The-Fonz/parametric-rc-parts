@@ -85,6 +85,9 @@ CADview.prototype.render = function () {
 
 CADview.prototype.addModelToScene = function ( geom, materials ) {
 
+	// Let listeners know that we've received the JSON model
+	//$(this).trigger()
+
 	var material = new THREE.MeshLambertMaterial( {color: 0x999999} );
 	//material.wireframe = true;
 	var mesh = new THREE.Mesh( geom, material );
@@ -104,8 +107,19 @@ CADview.prototype.addModelToScene = function ( geom, materials ) {
 	this.render();
 }
 
-CADview.prototype.load = function ( url ) {
+CADview.prototype.load = function ( url, progressCb ) {
 	// Initiate loading
 	var loader = new THREE.JSONLoader();
 	loader.load( url, this.addModelToScene.bind(this) );
+
+	/* This is a tryout to try and indicate progress. Kinda works but tries to
+	   load 'undefined' which gives an error. Have to look into it to get it to work. */
+	if ( progressCb === undefined ) {
+		progressCb = function (obj) {
+			console.log( "Loading progress! Total: " + obj.total + ", loaded: " + obj.loaded );
+		}
+	}
+	//loadAjaxJSON = function ( context, url, callback, texturePath, callbackProgress )
+	// loader.extractUrlBase(url) is needed, see THREE.JSONLoader.load
+	loader.loadAjaxJSON( loader, url, this.addModelToScene.bind(this), loader.extractUrlBase(url), progressCb )
 }

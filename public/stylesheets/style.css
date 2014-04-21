@@ -7162,15 +7162,82 @@ body {
   margin-right: 5px;
   margin-left: -23px;
 }
+.part-page .panel-title .progress {
+  margin-bottom: 0px;
+}
 .part-page input.sl {
   width: 100%;
+}
+.part-page .controls span {
+  margin-right: 8px;
+  text-transform: uppercase;
+}
+.part-page .controls span.desc {
+  font: 300 14px 'Open Sans', sans-serif;
+  line-height: 35px;
+  height: 35px;
+  display: inline-block;
+}
+.part-page .controls .left-click:before {
+  display: inline-block;
+  background-image: url('/public/images/mouse-left-click.svg');
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  content: "";
+  margin-right: 4px;
+}
+.part-page .controls .right-click:before {
+  display: inline-block;
+  background-image: url('/public/images/mouse-right-click.svg');
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  content: "";
+  margin-right: 4px;
+}
+.part-page .controls .scroll:before {
+  display: inline-block;
+  background-image: url('/public/images/mouse-scroll.svg');
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  content: "";
+  margin-right: 4px;
+}
+.part-page .controls .touch-drag:before {
+  display: inline-block;
+  background-image: url('/public/images/one_finger_drag_gestureworks.png');
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  content: "";
+  margin-right: 4px;
+}
+.part-page .controls .touch-pinch:before {
+  display: inline-block;
+  background-image: url('/public/images/two_finger_scale_gestureworks.png');
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  content: "";
+  margin-right: 4px;
+}
+.part-page .controls .touch-swipe:before {
+  display: inline-block;
+  background-image: url('/public/images/three_finger_drag_gestureworks.png');
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  content: "";
+  margin-right: 4px;
 }
 body > footer {
   text-align: center;
   border-top: 1px solid #e7e7e7;
   padding-top: 2em;
   padding-bottom: 2em;
-  margin-top: 2em;
+  margin-top: 8em;
   color: #777777;
   background-color: #f4f4f4;
 }
@@ -7242,6 +7309,19 @@ body > footer {
   border-left-color: #0480be;
   margin-left: 0;
 }
+.slider.slider-disabled .slider-handle {
+  background-image: -webkit-linear-gradient(top, #dfdfdf 0%, #bebebe 100%);
+  background-image: linear-gradient(to bottom, #dfdfdf 0%, #bebebe 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdfdfdf', endColorstr='#ffbebebe', GradientType=0);
+}
+.slider.slider-disabled .slider-track {
+  background-image: -webkit-linear-gradient(top, #e5e5e5 0%, #e9e9e9 100%);
+  background-image: linear-gradient(to bottom, #e5e5e5 0%, #e9e9e9 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe5e5e5', endColorstr='#ffe9e9e9', GradientType=0);
+  cursor: not-allowed;
+}
 .slider input {
   display: none;
 }
@@ -7251,63 +7331,44 @@ body > footer {
 .slider-track {
   position: absolute;
   cursor: pointer;
-  background-color: #f7f7f7;
-  background-image: -moz-linear-gradient(top, #f5f5f5, #f9f9f9);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#f9f9f9));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #f9f9f9);
-  background-image: -o-linear-gradient(top, #f5f5f5, #f9f9f9);
-  background-image: linear-gradient(to bottom, #f5f5f5, #f9f9f9);
+  background-image: -webkit-linear-gradient(top, #f5f5f5 0%, #f9f9f9 100%);
+  background-image: linear-gradient(to bottom, #f5f5f5 0%, #f9f9f9 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#fff9f9f9', GradientType=0);
   -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   border-radius: 4px;
 }
 .slider-selection {
   position: absolute;
-  background-color: #f7f7f7;
-  background-image: -moz-linear-gradient(top, #f9f9f9, #f5f5f5);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f9f9f9), to(#f5f5f5));
-  background-image: -webkit-linear-gradient(top, #f9f9f9, #f5f5f5);
-  background-image: -o-linear-gradient(top, #f9f9f9, #f5f5f5);
-  background-image: linear-gradient(to bottom, #f9f9f9, #f5f5f5);
+  background-image: -webkit-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
+  background-image: linear-gradient(to bottom, #f9f9f9 0%, #f5f5f5 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff9f9f9', endColorstr='#fff5f5f5', GradientType=0);
   -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   border-radius: 4px;
 }
 .slider-handle {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-color: #0e90d2;
-  background-image: -moz-linear-gradient(top, #149bdf, #0480be);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#149bdf), to(#0480be));
-  background-image: -webkit-linear-gradient(top, #149bdf, #0480be);
-  background-image: -o-linear-gradient(top, #149bdf, #0480be);
-  background-image: linear-gradient(to bottom, #149bdf, #0480be);
+  background-color: #3a94a5;
+  background-image: -webkit-linear-gradient(top, #149bdf 0%, #0480be 100%);
+  background-image: linear-gradient(to bottom, #149bdf 0%, #0480be 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff149bdf', endColorstr='#ff0480be', GradientType=0);
+  filter: none;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   opacity: 0.8;
   border: 0px solid transparent;
 }
 .slider-handle.round {
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
+  border-radius: 50%;
 }
 .slider-handle.triangle {
   background: transparent none;

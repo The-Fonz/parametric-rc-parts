@@ -1,6 +1,44 @@
 {
 	"owner_id": "AE5400DB",
-	"title": "A giant stork",
+	"title": "A giant stork with parameters",
 	"description": "This stork is gigantic and beautiful. It might be a little rough around the edges but hey, that's OK.",
-	"tags": ["animal", "stork", "first", "test"]
+	"tags": ["animal", "stork", "first", "test"],
+
+
+	"params": [
+
+		{"name": "Diameter",
+		 "desc": "Edit the diameter of the wheel",
+		 "default": 2.1,
+		 "min": 1.3,
+		 "max": 2.6,
+		 "treename": "diam"
+		 },
+
+		 {"name": "Spokes",
+		  "desc": "Edit the number of spokes of the wheel",
+		  "default": 5,
+		  "min": 8,
+		  "max": 12,
+		  "step": 1,
+		  "treename": "spokes"
+		  }
+	],
+
+	"presets": [
+		{"name": "2mm 5 spokes",
+		 "desc": "This is for big trucks",
+		 "params": [
+		 	["diam", 2.04],
+		 	["spokes", 9]
+		 ]
+		},
+		{"name": "2.4mm 10 spokes",
+		 "desc": "This is for big trucks",
+		 "params": [
+		 	["diam", 2.4],
+		 	["spokes", 10]
+		 ]
+		}
+	]
 }

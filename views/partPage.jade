@@ -2,7 +2,6 @@ extends layout
 
 block content
   section.container.part-page
-    h1= part.title
     .row
       .col-xs-12.col-sm-6
         .thumbnail
@@ -16,34 +15,74 @@ block content
         //-p.alert.alert-danger Something went wrong when loading this page :(
         .panel.panel-default
           .panel-heading
-            h3.panel-title
-              span Parameters
+            h3.panel-title.loadbar
+              span.tog Parameters
+              .progress.progress-striped.active.hidden.tog
+                .progress-bar(role="progressbar", style="width: 0%")
           .panel-body
             form.form-horizontal(role='form')
-                .form-group
-                    label.col-md-4.control-label(for='inputEmail3') Email
+              //- Preset functionality in-the-works
+                if (part.presets)
+                  .form-group
+                    label.col-md-4.control-label(for='dropdown') Preset
                     .col-sm-8
-                      input.sl(type='text', value='', data-slider-min='-20',
-                        data-slider-max='20', data-slider-step='1',
-                        data-slider-value='-14')
+                      select.form-control#dropdown
+                        //- For each preset of part
+                        for preset in part.presets
+                          option(data-toggle="tooltip", data-placement="top", title="#{preset.desc}")= preset.name
+                          // Tooltip preset.desc
+                          // Store parameters, preset.params
+
+              //- For each parameter of part
+              if (!part.params)
+                p This part has no parameters.
+              else
+                each param in part.params
+                  .form-group
+                      label.col-md-4.control-label(for='p1') #{param.name}
+                      .col-sm-8
+                        //- If step size is not given...
+                        if (!param.step)
+                          //- Use one fortieth
+                          - var step = (param.max - param.min) / 40;
+                        else
+                          - var step = param.step
+                        input.sl(type='text', value='', id="#{param.treename}", data-slider-id='#{param.treename}',
+                          data-slider-min='#{param.min}',
+                          data-slider-max='#{param.max}', data-slider-step='#{step}',
+                          data-slider-value='#{param.default}')
 
 
     .row
       .col-xs-12.col-sm-6
+        //- To .controls add .alert.alert-info.alert-dismissable to make it an alert
+        .controls
+          button.close(type="button", data-dismiss="alert" aria-hidden="true") &times;
+          //- Icons inserted using :before in CSS
+          span.left-click
+            span.touch-drag
+              span.desc Rotate
+          span.right-click
+            span.touch-swipe
+              span.desc Pan
+          span.scroll
+            span.touch-pinch
+              span.desc Zoom
+
+        h1= part.title
         p= part.description
       .col-xs-12.col-sm-6
         p Specifications, order, etc.
     .row
       .col-xs-12
-        p Comments here. Aligned in the middle.
+        //
+          p Comments here. Aligned in the middle.
 
 
 block append scripts
-  script(src="/public/javascripts/bundle.js")
+  script(src="/public/javascripts/bundle.min.js")
   //- Now initialize the part page with the code in bundle.js
   script(type="text/javascript").
     $(function() {
       PRC_initPartPage();
-
-      $('.sl').slider();
     });
