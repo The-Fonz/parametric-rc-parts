@@ -22,12 +22,14 @@ html
             | Parametric
             strong RC
         nav(role="navigation")
+          //- Block setActive contains a string declaration
+          block active
           ul.nav.navbar-nav
-            li.active
-              a(href="/") Parts
-            li
-              a(href="#") Create
-            li
+            li(class = active === 'parts' ? 'active' : null )
+              a(href="/") Parts #{x}
+            li(class = active === 'create' ? 'active' : null )
+              a(href="/create") Create
+            li(class = active === 'myparts' ? 'active' : null )
               a(href="#") My Parts
 
     block content

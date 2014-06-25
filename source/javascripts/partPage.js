@@ -9,7 +9,9 @@ function PRC_initPartPage() {
 	// as a jQuery object to have .on() and .trigger() available
 	$(cadview).on('load', function( evt ) {
 		// Construct model url and load model from server
-		this.load( window.location.pathname + '/threejson', function (obj) {
+		// Do `.replace("#","?")` on the hash to make it a query, hashes are not sent to the server
+		this.load( window.location.pathname + '/threejson' + window.location.hash.replace("#","?"),
+		function (obj) {
 			// This callback gets called on progress
 
 			// Show bar, hide all else (make sure to apply these classes correctly)
@@ -25,7 +27,7 @@ function PRC_initPartPage() {
 
 			if (!obj.loaded || !obj.total) {
 				// I've seen obj.total be undefined so let's check for that...
-				var progPerc = 0;
+				var progPerc = 50;
 			} else {
 				var progPerc = obj.loaded / obj.total * 100;
 			}

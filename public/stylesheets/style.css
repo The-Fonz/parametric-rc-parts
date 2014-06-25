@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400);
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
@@ -266,7 +266,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: 'Open Sans';
+  font-family: 'Source Sans Pro';
   font-size: 16px;
   line-height: 1.42857143;
   color: #333333;
@@ -7125,18 +7125,18 @@ http://mudcu.be/sphere/# analogous websmart
   max-width: 970px;
 }
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   background: url(/public/images/bgnoise.png);
   height: 100%;
 }
 .navbar-header {
-  font: 300 1.2em 'Open Sans', sans-serif;
+  font: 300 1.2em 'Source Sans Pro', sans-serif;
 }
 .navbar-static-top {
-  font: 300 1.6em 'Open Sans', sans-serif;
+  font: 300 1.6em 'Source Sans Pro', sans-serif;
 }
 .productgrid .product h1 {
-  font: 300 2em 'Open Sans', sans-serif;
+  font: 300 2em 'Source Sans Pro', sans-serif;
   margin-top: 0;
   margin-bottom: 0;
   text-align: center;
@@ -7145,7 +7145,7 @@ body {
   text-decoration: none;
 }
 .productgrid .product p {
-  font: 300 1em 'Open Sans', sans-serif;
+  font: 300 1em 'Source Sans Pro', sans-serif;
   color: #666;
 }
 .productgrid .label {
@@ -7153,7 +7153,7 @@ body {
   margin-right: 0.2em;
 }
 .part-page .panel-title {
-  font: 300 1.3em 'Open Sans', sans-serif;
+  font: 300 1.3em 'Source Sans Pro', sans-serif;
   text-align: center;
 }
 .part-page .panel-title span:before {
@@ -7173,7 +7173,7 @@ body {
   text-transform: uppercase;
 }
 .part-page .controls span.desc {
-  font: 300 14px 'Open Sans', sans-serif;
+  font: 300 14px 'Source Sans Pro', sans-serif;
   line-height: 35px;
   height: 35px;
   display: inline-block;

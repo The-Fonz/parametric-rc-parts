@@ -63,8 +63,8 @@ function CADview ( target ) {
 	this.directionalLight.position.set( 0, 1, 0 );
 	this.scene.add( this.directionalLight );
 	// Add ambient light
-	light = new THREE.AmbientLight( 0x999999 );
-	this.scene.add( light );
+	this.ambientLight = new THREE.AmbientLight( 0x999999 );
+	this.scene.add( this.ambientLight );
 
 	// ## Use the GREAT OrbitControls.js
 	// Don't forget to specify target! Otherwise it's document
@@ -93,6 +93,9 @@ CADview.prototype.addModelToScene = function ( geom, materials ) {
 	var mesh = new THREE.Mesh( geom, material );
 	//mesh.scale.set(.002,.002,.002);
 
+	// First clear scene
+	this.clearScene();
+	// Now add mesh
 	this.scene.add( mesh );
 
 	// ## Set camera position based on bounding sphere
@@ -122,4 +125,17 @@ CADview.prototype.load = function ( url, progressCb ) {
 	//loadAjaxJSON = function ( context, url, callback, texturePath, callbackProgress )
 	// loader.extractUrlBase(url) is needed, see THREE.JSONLoader.load
 	loader.loadAjaxJSON( loader, url, this.addModelToScene.bind(this), loader.extractUrlBase(url), progressCb )
+}
+
+CADview.prototype.clearScene = function () {
+// Clear the entire scene except for plane and camera
+	for ( var i = this.scene.children.length - 1; i >= 0 ; i -- ) {
+		var obj = this.scene.children[ i ];
+		// Add any object that shouldn't be deleted in this if statement
+		if ( obj !== this.camera &&
+			obj !== this.directionalLight &&
+			obj !== this.ambientLight ) {
+			this.scene.remove(obj);
+		}
+	}
 }

@@ -11,7 +11,8 @@
     "mongodb": "*",
     "always": "*",
     "passport": "*",
-    "when": "*"
+    "when": "*",
+    "markdown": "*"
   },
   "devDependencies": {
     "jasmine-node": "*",

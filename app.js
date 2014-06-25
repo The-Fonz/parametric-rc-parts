@@ -6,36 +6,6 @@ var path = require('path');
 var lessMiddleware = require('less-middleware'); // CSS preprocessor
 var app = express();
 
-/* Doesn't work, ALways restarts each time on bundle.js change!
-// ### Browserify!
-var browserify = require('browserify');
-var b = browserify();
-b.add('./source/javascripts/main.js');
-// Compile once (on start or restart)
-var fs = require('fs');
-var UglifyJS = require("uglify-js");
-b.bundle( function( err, src ) {
-
-	var bundle = './public/javascripts/bundle.js';
-
-	try {
-		var cur = fs.readFileSync( bundle, 'utf8' );
-	} catch (Error) {
-		console.error("File " + bundle + " does not exist");
-	}
-	
-	if ( cur !== src ) {
-		fs.writeFileSync( './public/javascripts/bundle.js', src );
-		console.log("Browserified bundle.js");
-		// Minify
-		var srcmin = UglifyJS.minify( src, {fromString: true});
-		fs.writeFileSync( './public/javascripts/bundle.min.js', srcmin);
-		console.log("Minified bundle.min.js");
-	} else {
-		console.log("bundle.js did not change");
-	}
-});*/
-
 // ## All environments
 var PRT = null;
 if ('development' == app.get('env')) PRT = 3000; // Development needs another port than 80
@@ -94,7 +64,7 @@ app.get('/part/:partid/threejson', require('./presenters/part/threeJson').get );
 app.get('/part/:partid/graphviz', function (req, res) {res.end("Graphviz requested for part # " + req.params.partid)});
 
 // Create page. Authenticate when submitting?
-app.get('/create', function(){}); // Auth path????
+app.get('/create', require('./presenters/create/createPage').get ); // Auth path????
 
 // Routes that require authentication
 // ----------------------------------

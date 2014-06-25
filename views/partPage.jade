@@ -1,14 +1,16 @@
 extends layout
 
+block active
+  - var active = 'parts'
+
 block content
   section.container.part-page
     .row
       .col-xs-12.col-sm-6
         .thumbnail
           #partRenderCanvas
-            .overlay
-              .loadinfo
-                | Loading 3D view...
+            .loadinfo
+              | Loading 3D view...
             img(src='/public/images/thumbnails/#{part._id}.gif')
       #parameterModule.col-xs-12.col-sm-6
         //- If users see this, then the parameter module wasn't initalized properly
@@ -70,9 +72,10 @@ block content
               span.desc Zoom
 
         h1= part.title
-        p= part.description
-      .col-xs-12.col-sm-6
-        p Specifications, order, etc.
+        // Markdown enabled!
+        :markdown= part.description
+      .col-xs-12.col-sm-6.
+        Specifications, order, etc.
     .row
       .col-xs-12
         //

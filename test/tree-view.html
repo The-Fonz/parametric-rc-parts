@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<head>
+
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
+<style type="text/css">
+button, .modeltree .hasContents {
+	cursor: pointer;
+}
+/* Indent */
+.modeltree .branchContent {
+	margin-left: 5%;
+}
+
+.modeltree .hasContents::before {
+	content: '^';
+}
+.modeltree .hasContents.folded::before {
+	content: '>';
+}
+
+.modeltree .parameter button {
+	/*float: right;*/
+}
+
+</style>
+
+<script type="text/javascript">
+
+var treedata = {
+	'Cut': {
+		'Box': {
+			'Length': 10,
+			'Width' : 8,
+			'Rest': {
+				'Box': {
+					'Arms': 10000,
+					'Legs' : 64
+				}
+			}
+		}
+	},
+	'Nopar': {},
+	'SomeOtherThing': {
+		'Pos x': 157,
+		'Pos y': 897,
+		'Pos z': 0
+	}
+}
+
+// Builds tree markup recursively
+function buildTreeMarkup ( tree ) {
+
+	// Init html string to return later
+	var html = "";
+
+	// Get key names
+	var keys = Object.keys( tree );
+
+	// Iterate over all branches
+	for (var i=0; i<keys.length; i++) {
+
+		var branchName = keys[i];
+		var branchContents = tree[branchName];
+
+		// If it contains a (empty) branch
+		if ( typeof branchContents === "object" ) {
+
+			var isEmpty = $.isEmptyObject(branchContents);
+
+			// Add 'hasContents' class if it's not empty
+			html += "<div class='name "+ (isEmpty ? '': 'hasContents')+
+			"'>"+branchName+"</div>";
+
+			// If branch is not empty
+			if ( ! isEmpty ) {
+				html += "<div class='branchContent'>";
+				// Recursive call
+				html += buildTreeMarkup( branchContents );
+				html += "</div>";
+			}
+
+		// If it contains a parameter
+		} else if ( typeof branchContents === "number" ) {
+
+			var addBtn = "<button class='addParam'>Add parameter</button>";
+
+			html += "<div class='parameter'>"+branchName+": "+
+			branchContents+addBtn+"</div>";
+		}
+	}
+
+	return html;
+}
+
+
+$(function() {
+
+	// Render entire tree
+	$('.modeltree').html( buildTreeMarkup( treedata ) );
+
+
+	// Set up fold/unfold functionality
+	$('.modeltree .hasContents').on('click', function(){
+		$(this)
+		.toggleClass("folded")
+		.next().slideToggle();
+	});
+
+
+	// Hook up fold/unfold all toggle button
+	$('button.foldToggle').on('click', function() {
+
+		var foldedClass = "folded";
+
+		// All expandable properties (with arrow down/arrow right)
+		var expandableProps = $('.modeltree .hasContents');
+
+		var branches = $('.modeltree .branchContent');
+		// Second level branches
+		var secLevBranches = $('.modeltree .branchContent > .branchContent');
+
+		if ($(this).hasClass( foldedClass )) {
+
+			var text = "Fold all";
+			// First unfold all second level branches immediately
+			secLevBranches.slideDown(0);
+			// That makes this slideDown action much smoother
+			branches.slideDown();
+			// Add class for arrow down display
+			expandableProps.removeClass( foldedClass );
+
+		} else {
+			var text = "Unfold all";
+			branches.slideUp();
+			// Add class for arrow right display
+			expandableProps.addClass( foldedClass );
+		}
+
+		$(this).toggleClass( foldedClass );
+
+		// Wait with setting new text until after folding/unfolding finishes
+		setTimeout(function() {
+			$(this).html(text);
+			// Don't forget to bind. 400ms is default slideUp() value
+		}.bind(this), 400);
+	});
+
+
+	// Set up 'Add parameter' button functionality
+	$('button.addParam').on('click')
+});
+
+</script>
+
+</head>
+<body>
+
+<button class="foldToggle">Fold all</button>
+<!-- Container div -->
+<div class="modeltree"></div>
+
+</body>
