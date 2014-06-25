@@ -25,6 +25,8 @@ bower_components
 npmstart.cmd
 # And this shortcut
 mongod.exe - Snelkoppeling
+# And docs, they show up as changed each time, probably because of line endings
+docs/**
 
 
 #################
