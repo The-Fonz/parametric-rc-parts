@@ -4,14 +4,21 @@
 
  // URL parsing logic
  var url = require('url');
+ var path = require('path');
 
 // Assume parametric generator location
-var Manager = require( process.cwd()+ '/../freecad-parametric-generator/manager').Manager;
-var genUtils = require( process.cwd()+ '/../freecad-parametric-generator/utils');
+var Manager = require( path.resolve('../freecad-parametric-generator/manager')).Manager;
+var genUtils = require( path.resolve('../freecad-parametric-generator/utils'));
 
 // DIRTY
-// Looks in '../freecad-parametric-generator/test/example-parts/'
-var testFile = 'torus.FCStd';
+var testFile = path.resolve('../freecad-parametric-generator/test/example-parts/torus.FCStd');
+
+// ## Load environment variables that set configuration
+// PRC_PYTHON_CMD
+var PYTHON_CMD = process.env.PRC_PYTHON_CMD;
+if (!PYTHON_CMD) throw Error("PRD_PYTHON_CMD environment variable not set");
+//else console.log("PRC_PYTHON_CMD: "+PYTHON_CMD)
+// "C:/Program Files (x86)/FreeCAD0.13/bin/python.exe"
 
 // Remember manager instance
 var managerInstance = null;
@@ -36,8 +43,9 @@ exports.get = function(req, res){
 		// Hash is present so we'll generate the new model on-the-fly
 		var cmdBlock = genUtils.parseHash( hash );
 
+		// Create new manager instance if non-existent
 		if (!managerInstance) {
-			managerInstance = new Manager();
+			managerInstance = new Manager( PYTHON_CMD );
 		}
 		
 		managerInstance.cmdsAndTessellate( req, res, testFile, cmdBlock );

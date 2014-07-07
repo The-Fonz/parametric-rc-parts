@@ -8,8 +8,10 @@ var app = express();
 
 // ## All environments
 var PRT = null;
-if ('development' == app.get('env')) PRT = 3000; // Development needs another port than 80
-else PRT = 80; // In production, we use the standard HTML port 80
+//console.log(process.env);
+// In production, we use the standard HTML port 80
+if ('production' == process.env.NODE_ENV) PRT = 80;
+else PRT = 3000;
 app.set('port', process.env.PORT || PRT); // Set port
 // Configuration of views
 app.set('views', path.join(__dirname, 'views'));
