@@ -27,8 +27,8 @@ describe("Database", function () {
 	var dbstorkmeta = null;
 	var dbstorkthreejson = null;
 	it("test model should be there", function () {
-		dbstorkmeta = require('../spec/testModels/dbobject-stork-test-partmeta.json');
-		dbstorkthreejson = require('../spec/testModels/dbobject-stork-test-threejson.json');
+		dbstorkmeta = require('../spec/testModels/test-partmeta.json');
+		dbstorkthreejson = require('../spec/testModels/multi-material.json');
 		expect( dbstorkmeta.owner_id ).toBe("AE5400DB"); // Hard-coded check
 		expect( dbstorkthreejson.metadata.formatVersion ).toBe( 3 ); // Hard-coded check
 	});

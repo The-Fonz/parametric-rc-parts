@@ -1,0 +1,44 @@
+{
+	"owner_id": "AE5400DB",
+	"title": "Test model",
+	"description": "This is a test model. Upon loading, you will see a test object being displayed in 3D (with WebGL), which is loaded from a database. But change any of the sliders, and another test model--consisting of a torus and cone--will be generated on-the-fly!",
+	"tags": ["it's alive!", "first", "test"],
+
+
+	"params": [
+
+		{"name": "Holes",
+		 "desc": "Edit the number of holes in the torus",
+		 "default": 8,
+		 "min": 1,
+		 "max": 14,
+		 "step": 1,
+		 "treename": "Array:NumberPolar"
+		 },
+
+		 {"name": "Axle diameter",
+		  "desc": "Edit the diameter of the cylinder that cuts the cone",
+		  "default": 2,
+		  "min": 1,
+		  "max": 3,
+		  "treename": "Cylinder:Radius"
+		  }
+	],
+
+	"presets": [
+		{"name": "2mm 5 spokes",
+		 "desc": "This is for big trucks",
+		 "params": [
+		 	["sliderlabel?", 2.04],
+		 	["sliderlabel?", 9]
+		 ]
+		},
+		{"name": "2.4mm 10 spokes",
+		 "desc": "This is for big trucks",
+		 "params": [
+		 	["sliderlabel?", 2.4],
+		 	["sliderlabel?", 10]
+		 ]
+		}
+	]
+}
