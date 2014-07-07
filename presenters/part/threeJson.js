@@ -7,11 +7,11 @@
  var path = require('path');
 
 // Assume parametric generator location
-var Manager = require( path.resolve('../freecad-parametric-generator/manager')).Manager;
-var genUtils = require( path.resolve('../freecad-parametric-generator/utils'));
+var Manager = require( path.resolve( __dirname, '../../../freecad-parametric-generator/manager')).Manager;
+var genUtils = require( path.resolve( __dirname, '../../../freecad-parametric-generator/utils'));
 
 // DIRTY
-var testFile = path.resolve('../freecad-parametric-generator/test/example-parts/torus.FCStd');
+var testFile = path.resolve( __dirname, '../../../freecad-parametric-generator/test/example-parts/torus.FCStd');
 
 // ## Load environment variables that set configuration
 // PRC_PYTHON_CMD

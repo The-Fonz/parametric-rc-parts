@@ -3,13 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "always app.js"
+    "start": "forever app.js"
   },
   "dependencies": {
     "express": "~3.4.8",
     "jade": "*",
     "mongodb": "*",
-    "always": "*",
     "passport": "*",
     "when": "*",
     "markdown": "*"
